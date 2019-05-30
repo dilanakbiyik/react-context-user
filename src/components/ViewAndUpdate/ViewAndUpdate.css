@@ -1,0 +1,15 @@
+.view-update{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.user-list-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancel{
+    background: #D08770;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css'
 import { StateProvider } from './providers/StateProvider';
 import {
     INIT_APP,
@@ -15,7 +16,7 @@ import ViewAndUpdate from "./components/ViewAndUpdate/ViewAndUpdate";
 
 export interface UserInterface{
     name: string
-    age: number
+    age: string
 }
 
 export interface AppInterface {
@@ -23,6 +24,7 @@ export interface AppInterface {
     userInputs: UserInterface,
     page: Page,
     isEdit: boolean,
+    isNew: boolean,
     selectedUserIndex: number
 }
 
@@ -31,11 +33,12 @@ const App = () => {
         users: [],
         userInputs: {
             name: '',
-            age: 0
+            age: ''
         },
         page: CREATE_PAGE,
         isEdit: false,
-        selectedUserIndex: -1
+        selectedUserIndex: -1,
+        isNew: false
     };
 
     const reducer = (state: AppInterface, action: AppAction) => {
@@ -46,7 +49,9 @@ const App = () => {
                 return {
                     ...state,
                     userInputs: initialState.userInputs,
-                    page: action.payload.page
+                    page: action.payload.page,
+                    isNew: false,
+                    isEdit: false,
                 };
             case UPDATE_NAME:
                 return {
@@ -63,6 +68,7 @@ const App = () => {
                         ...state.users,
                         state.userInputs
                     ],
+                    isNew: true,
                     userInputs: initialState.userInputs
                 };
             case EDIT_USER:
@@ -96,8 +102,10 @@ const App = () => {
 
     return (
         <StateProvider initialState={initialState} reducer={reducer}>
-            <Create/>
-            <ViewAndUpdate/>
+            <div className="App">
+                <Create/>
+                <ViewAndUpdate/>
+            </div>
         </StateProvider>
     );
 }

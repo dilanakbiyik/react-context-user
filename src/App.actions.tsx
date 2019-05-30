@@ -31,7 +31,7 @@ export interface UpdateNameAction {
 export interface UpdateAgeAction {
     type: typeof UPDATE_AGE
     payload: {
-        age: number
+        age: string
     }
 }
 
@@ -62,7 +62,7 @@ export const updateName = (name: string): UpdateNameAction => ({
         name
     },
 });
-export const updateAge = (age: number): UpdateAgeAction => ({
+export const updateAge = (age: string): UpdateAgeAction => ({
     type: UPDATE_AGE,
     payload: {
         age
