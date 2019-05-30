@@ -8,7 +8,7 @@ import {
     CREATE_NEW_USER,
     Page,
     CREATE_PAGE,
-    CHANGE_PAGE
+    CHANGE_PAGE, EDIT_USER, UPDATE_USER
 } from "./App.actions";
 import Create from "./components/Create/Create";
 import ViewAndUpdate from "./components/ViewAndUpdate/ViewAndUpdate";
@@ -20,18 +20,22 @@ export interface UserInterface{
 
 export interface AppInterface {
     users: UserInterface[],
-    newUser: UserInterface,
-    page: Page
+    userInputs: UserInterface,
+    page: Page,
+    isEdit: boolean,
+    selectedUserIndex: number
 }
 
 const App = () => {
     const initialState: AppInterface = {
         users: [],
-        newUser: {
+        userInputs: {
             name: '',
             age: 0
         },
-        page: CREATE_PAGE
+        page: CREATE_PAGE,
+        isEdit: false,
+        selectedUserIndex: -1
     };
 
     const reducer = (state: AppInterface, action: AppAction) => {
@@ -41,13 +45,14 @@ const App = () => {
             case CHANGE_PAGE:
                 return {
                     ...state,
+                    userInputs: initialState.userInputs,
                     page: action.payload.page
                 };
             case UPDATE_NAME:
                 return {
                     ...state,
-                    newUser: {
-                        ...state.newUser,
+                    userInputs: {
+                        ...state.userInputs,
                         name: action.payload.name
                     }
                 };
@@ -56,15 +61,31 @@ const App = () => {
                     ...state,
                     users: [
                         ...state.users,
-                        state.newUser
+                        state.userInputs
                     ],
-                    newUser: initialState.newUser
+                    userInputs: initialState.userInputs
+                };
+            case EDIT_USER:
+                return {
+                    ...state,
+                    userInputs: action.payload.index > -1 ? state.users[action.payload.index] : initialState.userInputs,
+                    isEdit: action.payload.isEdit,
+                    selectedUserIndex: action.payload.index
+                };
+            case UPDATE_USER:
+                state.users[state.selectedUserIndex] = state.userInputs;
+                return {
+                    ...state,
+                    users: [...state.users],
+                    isEdit: false,
+                    selectedUserIndex: initialState.selectedUserIndex,
+                    userInputs: initialState.userInputs
                 };
             case UPDATE_AGE:
                 return {
                     ...state,
-                    newUser: {
-                        ...state.newUser,
+                    userInputs: {
+                        ...state.userInputs,
                         age: action.payload.age
                     }
                 };

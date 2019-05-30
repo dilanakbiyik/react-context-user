@@ -5,6 +5,8 @@ export const UPDATE_NAME = 'UPDATE_NAME';
 export const UPDATE_AGE = 'UPDATE_AGE';
 export const CREATE_NEW_USER = 'CREATE_NEW_USER';
 export const CHANGE_PAGE = 'CHANGE_PAGE';
+export const EDIT_USER = 'EDIT_USER';
+export const UPDATE_USER = 'UPDATE_USER';
 
 export const CREATE_PAGE = 'CREATE_PAGE';
 export const VIEW_AND_UPDATE_PAGE = 'VIEW_AND_UPDATE_PAGE';
@@ -15,7 +17,7 @@ export type Page = typeof PAGES[number]
 export interface InitAppAction {
     type: typeof INIT_APP
     payload: {
-        newUser: UserInterface
+        userInputs: UserInterface
         users: UserInterface[]
     }
 }
@@ -43,6 +45,16 @@ export interface ChangePageAction {
         page: Page
     }
 }
+export interface EditUserAction {
+    type: typeof EDIT_USER
+    payload: {
+        isEdit: boolean,
+        index: number
+    }
+}
+export interface UpdateUserAction {
+    type: typeof UPDATE_USER
+}
 
 export const updateName = (name: string): UpdateNameAction => ({
     type: UPDATE_NAME,
@@ -65,5 +77,22 @@ export const changePage = (page: Page): ChangePageAction => ({
         page
     }
 });
+export const editUser = (index: number, isEdit: boolean): EditUserAction => ({
+    type: EDIT_USER,
+    payload: {
+        isEdit,
+        index
+    }
+});
+export const updateUser = (): UpdateUserAction => ({
+    type: UPDATE_USER
+});
 
-export type AppAction = InitAppAction | UpdateNameAction | UpdateAgeAction | CreateNewUserAction | ChangePageAction
+export type AppAction = InitAppAction
+    | UpdateNameAction
+    | UpdateAgeAction
+    | CreateNewUserAction
+    | ChangePageAction
+    | EditUserAction
+    | UpdateUserAction
+
