@@ -1,7 +1,17 @@
 import React from 'react';
 import { StateProvider } from './providers/StateProvider';
-import {INIT_APP, AppAction, UPDATE_NAME, UPDATE_AGE, CREATE_NEW_USER} from "./App.actions";
+import {
+    INIT_APP,
+    AppAction,
+    UPDATE_NAME,
+    UPDATE_AGE,
+    CREATE_NEW_USER,
+    Page,
+    CREATE_PAGE,
+    CHANGE_PAGE
+} from "./App.actions";
 import Create from "./components/Create/Create";
+import ViewAndUpdate from "./components/ViewAndUpdate/ViewAndUpdate";
 
 export interface UserInterface{
     name: string
@@ -10,7 +20,8 @@ export interface UserInterface{
 
 export interface AppInterface {
     users: UserInterface[],
-    newUser: UserInterface
+    newUser: UserInterface,
+    page: Page
 }
 
 const App = () => {
@@ -19,13 +30,19 @@ const App = () => {
         newUser: {
             name: '',
             age: 0
-        }
+        },
+        page: CREATE_PAGE
     };
 
     const reducer = (state: AppInterface, action: AppAction) => {
         switch (action.type) {
             case INIT_APP:
                 return state;
+            case CHANGE_PAGE:
+                return {
+                    ...state,
+                    page: action.payload.page
+                };
             case UPDATE_NAME:
                 return {
                     ...state,
@@ -35,7 +52,6 @@ const App = () => {
                     }
                 };
             case CREATE_NEW_USER:
-                console.log("hree")
                 return {
                     ...state,
                     users: [
@@ -60,6 +76,7 @@ const App = () => {
     return (
         <StateProvider initialState={initialState} reducer={reducer}>
             <Create/>
+            <ViewAndUpdate/>
         </StateProvider>
     );
 }
